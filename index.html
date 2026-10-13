@@ -3,19 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Pix - App Bancário</title>
+    <title>App Bancário - Pix via BaaS</title>
     <!-- Tailwind CSS para design moderno e responsivo -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .mobile-container {
-            max-width: 420px;
-        }
+        body { font-family: 'Inter', sans-serif; }
+        .mobile-container { max-width: 420px; }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
@@ -30,7 +26,7 @@
                 </div>
                 <div>
                     <h1 class="font-bold text-lg">Banco Digital</h1>
-                    <p class="text-xs text-emerald-100">Área Pix Segura</p>
+                    <p class="text-xs text-emerald-100">Área Pix Segura (BaaS)</p>
                 </div>
             </div>
             <div class="text-right">
@@ -44,7 +40,7 @@
             <div id="form-view" class="space-y-6">
                 <div>
                     <h2 class="text-xl font-semibold text-white mb-1">Fazer um Pix</h2>
-                    <p class="text-sm text-slate-400">Insira os dados da transferência instantânea</p>
+                    <p class="text-sm text-slate-400">Transação processada via API BaaS</p>
                 </div>
 
                 <div class="bg-slate-700/50 p-4 rounded-2xl border border-slate-700 flex items-center justify-between">
@@ -60,12 +56,12 @@
 
                 <form id="pix-form" class="space-y-4" onsubmit="event.preventDefault(); processarPix();">
                     <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">Chave Pix (CPF, CNPJ, E-mail, Tel ou Chave Aleatória)</label>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">Chave Pix (CPF, CNPJ, E-mail ou Tel)</label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-key text-sm"></i>
                             </span>
-                            <input type="text" id="chave-pix" required placeholder="ex: 11999887766 ou email@teste.com"
+                            <input type="text" id="chave-pix" required placeholder="ex: email@teste.com"
                                 class="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition">
                         </div>
                     </div>
@@ -87,19 +83,20 @@
                         </select>
                     </div>
 
-                    <!-- Mensagem de erro se houver saldo insuficiente -->
+                    <!-- Mensagem de erro -->
                     <div id="error-box" class="hidden bg-rose-950/80 border border-rose-800 text-rose-300 text-xs p-3 rounded-xl flex items-center space-x-2">
                         <i class="fa-solid fa-triangle-exclamation"></i>
                         <span id="error-text">Erro ao processar transação.</span>
                     </div>
 
                     <button type="submit" id="btn-confirmar" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] transition font-semibold text-white py-3.5 rounded-xl shadow-lg shadow-emerald-900/30 flex items-center justify-center space-x-2">
-                        <span>Confirmar Pix</span>
+                        <span>Confirmar Pix via BaaS</span>
                         <i class="fa-solid fa-arrow-right text-xs"></i>
                     </button>
                 </form>
             </div>
 
+            <!-- Tela de Carregamento (Comunicação com o Backend) -->
             <div id="loading-view" class="hidden flex-col items-center justify-center py-12 space-y-6">
                 <div class="relative">
                     <div class="w-20 h-20 border-4 border-slate-700 border-t-emerald-500 rounded-full animate-spin"></div>
@@ -108,21 +105,21 @@
                     </div>
                 </div>
                 <div class="text-center space-y-2">
-                    <h3 class="font-semibold text-lg text-white">Processando Pix...</h3>
-                    <p id="loading-status-text" class="text-xs text-slate-400">Validando com o Banco Central (SPI)...</p>
+                    <h3 class="font-semibold text-lg text-white">Processando no BaaS...</h3>
+                    <p id="loading-status-text" class="text-xs text-slate-400">Enviando requisição segura ao servidor...</p>
                 </div>
             </div>
 
+            <!-- Tela de Sucesso -->
             <div id="success-view" class="hidden space-y-6">
                 <div class="text-center space-y-2 pt-2">
                     <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30">
                         <i class="fa-solid fa-check text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white">Pix Realizado!</h3>
-                    <p class="text-xs text-emerald-400">Transferência liquidada em tempo real</p>
+                    <h3 class="text-xl font-bold text-white">Pix Realizado com Sucesso!</h3>
+                    <p class="text-xs text-emerald-400">Liquidado via SPI / Banco Central</p>
                 </div>
 
-                <!-- Comprovante detalhado -->
                 <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-4 space-y-3 text-xs">
                     <div class="flex justify-between border-b border-slate-800 pb-2">
                         <span class="text-slate-400">Valor</span>
@@ -143,7 +140,7 @@
                     <div>
                         <span class="text-slate-400 block mb-1">ID da Transação (EndToEndId)</span>
                         <div class="bg-slate-800 p-2 rounded-lg font-mono text-[10px] text-emerald-300 break-all select-all flex items-center justify-between">
-                            <span id="receipt-e2e">E182371922026...</span>
+                            <span id="receipt-e2e">--</span>
                             <button onclick="copiarId()" class="ml-2 bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded text-[10px] text-white transition">Copiar</button>
                         </div>
                     </div>
@@ -155,87 +152,80 @@
                 </button>
             </div>
 
-            <!-- Rodapé informativo do simulador -->
+            <!-- Rodapé -->
             <div class="mt-8 pt-4 border-t border-slate-700/50 text-center">
-                <p class="text-[10px] text-slate-500">Simulador de Backend com Node.js / Java API Logic</p>
+                <p class="text-[10px] text-slate-500">Arquitetura Segura: HTML Frontend + Node.js Backend API</p>
             </div>
         </div>
     </div>
 
     <script>
-        // Sincronizar label de conta selecionada
         document.getElementById('conta-origem').addEventListener('change', function() {
             document.getElementById('label-conta').innerText = this.value.split(' - ')[0];
         });
 
-        function processarPix() {
+        async function processarPix() {
             const chave = document.getElementById('chave-pix').value;
             const valor = parseFloat(document.getElementById('valor-pix').value);
-            const conta = document.getElementById('conta-origem').value;
+            const contaOrigem = document.getElementById('conta-origem').value;
             const errorBox = document.getElementById('error-box');
             
             errorBox.classList.add('hidden');
 
-            // Validação fictícia de saldo (simulando a verificação de backend)
-            let saldoMaximo = conta.includes('Corrente') ? 1500.00 : 450.00;
-            if (valor > saldoMaximo) {
-                document.getElementById('error-text').innerText = `Saldo insuficiente na conta selecionada. Disponível: R$ ${saldoMaximo.toFixed(2)}`;
-                errorBox.classList.remove('hidden');
-                return;
-            }
-
-            // Alternar para tela de carregamento (simulando requisição HTTP POST)
+            // Alternar para tela de carregamento
             document.getElementById('form-view').classList.add('hidden');
             document.getElementById('loading-view').classList.remove('hidden');
+            document.getElementById('loading-status-text').innerText = "Enviando dados para o seu servidor backend...";
 
-            // Simula passos sequenciais de comunicação bancária (como nos exemplos de código)
-            setTimeout(() => {
-                document.getElementById('loading-status-text').innerText = "Validando chave no DICT (Diretório de Identificadores)...";
-            }, 1000);
+            try {
+                // Simula pausas visuais de requisição ao Banco Central
+                await new Promise(r => setTimeout(r, 800));
+                document.getElementById('loading-status-text').innerText = "Validando chave e consultando DICT / SPI...";
 
-            setTimeout(() => {
-                document.getElementById('loading-status-text').innerText = "Liquidando transação via SPI / Banco Central...";
-            }, 2000);
+                // Chamada real HTTP POST para o seu servidor backend Node.js
+                const response = await fetch('/api/realizar-pix', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chave, valor, contaOrigem })
+                });
 
-            setTimeout(() => {
+                const resultado = await response.json();
+
+                if (!response.ok || !resultado.sucesso) {
+                    throw new Error(resultado.erro || 'Falha ao processar a transação financeira.');
+                }
+
+                await new Promise(r => setTimeout(r, 1000));
                 document.getElementById('loading-view').classList.add('hidden');
                 document.getElementById('success-view').classList.remove('hidden');
 
-                // Preencher comprovante com dados dinâmicos gerados
+                // Preencher comprovante dinâmico com o retorno real da API
                 document.getElementById('receipt-valor').innerText = `R$ ${valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
                 document.getElementById('receipt-chave').innerText = chave;
-                document.getElementById('receipt-conta').innerText = conta.split(' - ')[0];
-                
-                const agora = new Date();
-                document.getElementById('receipt-data').innerText = agora.toLocaleString('pt-BR');
+                document.getElementById('receipt-conta').innerText = contaOrigem.split(' - ')[0];
+                document.getElementById('receipt-data').innerText = new Date().toLocaleString('pt-BR');
+                document.getElementById('receipt-e2e').innerText = resultado.transacaoId;
 
-                // Gerar EndToEndId dinâmico simulando o padrão do Banco Central
-                const randomHex = Array.from({length: 24}, () => Math.floor(Math.random() * 16).toString(16)).join('').toUpperCase();
-                const e2eId = `E000000002026${randomHex}`;
-                document.getElementById('receipt-e2e').innerText = e2eId;
-            }, 3200);
+            } catch (err) {
+                document.getElementById('loading-view').classList.add('hidden');
+                document.getElementById('form-view').classList.remove('hidden');
+                document.getElementById('error-text').innerText = err.message;
+                errorBox.classList.remove('hidden');
+            }
         }
 
         function copiarId() {
             const textToCopy = document.getElementById('receipt-e2e').innerText;
-            // Usando método compatível com iFrames/document.execCommand
-            const aux = document.createElement("input");
-            aux.setAttribute("value", textToCopy);
-            document.body.appendChild(aux);
-            aux.select();
-            document.execCommand("copy");
-            document.body.removeChild(aux);
-            
-            alertPersonalizado("ID da transação copiado para a área de transferência!");
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                alertPersonalizado("ID da transação copiado!");
+            });
         }
 
         function alertPersonalizado(mensagem) {
-            // Pequeno toast flutuante amigável para substituir alerts nativos proibidos
             const toast = document.createElement('div');
             toast.className = 'fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-emerald-600 text-white text-xs px-4 py-2 rounded-xl shadow-lg z-50 transition-all opacity-0';
             toast.innerText = mensagem;
             document.body.appendChild(toast);
-            
             setTimeout(() => toast.classList.add('opacity-100'), 50);
             setTimeout(() => {
                 toast.classList.remove('opacity-100');
