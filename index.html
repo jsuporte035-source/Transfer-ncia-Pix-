@@ -1,10 +1,81 @@
+/**
+ * =====================================================================
+ * APLICAÇÃO FULLSTACK ÚNICA (Backend Node.js + Frontend HTML/Tailwind)
+ * =====================================================================
+ * Para rodar:
+ * 1. npm init -y && npm install express
+ * 2. node app.js
+ * 3. Acesse http://localhost:3000 no navegador
+ */
+
+const express = require('express');
+const app = express();
+
+// Middleware para processar JSON e requisições
+app.use(express.json());
+
+// =====================================================================
+// 1. BACKEND API (Rotas protegidas que conversariam com o BaaS)
+// =====================================================================
+app.post('/api/realizar-pix', async (req, res) => {
+    try {
+        const { chave, valor, contaOrigem } = req.body;
+
+        // Validações de segurança no servidor
+        if (!chave || !valor || valor <= 0) {
+            return res.status(400).json({ sucesso: false, erro: 'Dados do Pix incompletos ou inválidos.' });
+        }
+
+        // Validação de saldo (Simulando banco de dados central)
+        let saldoDisponivel = contaOrigem.includes('Corrente') ? 1500.00 : 450.00;
+        if (valor > saldoDisponivel) {
+            return res.status(400).json({ sucesso: false, erro: 'Saldo insuficiente na conta de origem.' });
+        }
+
+        /* 
+          AQUI ENTRARIA A CHAMADA REAL AO SEU PARCEIRO BAAS (Celcoin, Dock, etc.):
+          const respostaBaaS = await fetch('https://api.sandbox.baasparceiro.com.br/v1/pix', {
+              method: 'POST',
+              headers: {
+                  'Authorization': `Bearer ${process.env.BAAS_API_KEY}`,
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ amount: valor, pix_key: chave })
+          });
+        */
+
+        // Simula atraso da rede do Banco Central (SPI / DICT)
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Gerando EndToEndId simulado padrão Banco Central
+        const randomHex = Array.from({length: 24}, () => Math.floor(Math.random() * 16).toString(16)).join('').toUpperCase();
+        const endToEndId = `E000000002026${randomHex}`;
+
+        return res.status(200).json({
+            sucesso: true,
+            transacaoId: endToEndId,
+            dataHora: new Date().toISOString()
+        });
+
+    } catch (error) {
+        console.error('Erro na API:', error);
+        return res.status(500).json({ sucesso: false, erro: 'Erro interno ao processar transação no servidor.' });
+    }
+});
+
+
+// =====================================================================
+// 2. FRONTEND (HTML, Tailwind CSS e JavaScript entregues pelo servidor)
+// =====================================================================
+app.get('/', (req, res) => {
+    res.send(`
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App Bancário - Pix via BaaS</title>
-    <!-- Tailwind CSS para design moderno e responsivo -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,9 +83,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
         .mobile-container { max-width: 420px; }
-        </head>
     </style>
-
+</head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
 
     <div class="mobile-container w-full bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-slate-700 flex flex-col relative">
@@ -38,16 +108,17 @@
         <!-- Conteúdo Dinâmico -->
         <div class="p-6 flex-1 flex flex-col justify-between">
 
+            <!-- Formulário Pix -->
             <div id="form-view" class="space-y-6">
                 <div>
                     <h2 class="text-xl font-semibold text-white mb-1">Fazer um Pix</h2>
-                    <p class="text-sm text-slate-400">Transação processada via API BaaS</p>
+                    <p class="text-sm text-slate-400">Transação processada via Backend Seguro</p>
                 </div>
 
                 <div class="bg-slate-700/50 p-4 rounded-2xl border border-slate-700 flex items-center justify-between">
                     <div>
                         <span class="text-xs text-slate-400 block">Conta de Origem</span>
-                        <span id="label-conta" class="font-medium text-slate-200 text-sm">Conta Corrente (45675-6)</span>
+                        <span id="label-conta" class="font-medium text-slate-200 text-sm">Conta Corrente (****-8912)</span>
                     </div>
                     <div class="text-right">
                         <span class="text-xs text-slate-400 block">Saldo Disponível</span>
@@ -90,14 +161,14 @@
                         <span id="error-text">Erro ao processar transação.</span>
                     </div>
 
-                    <button type="submit" id="btn-confirmar" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] transition font-semibold text-white py-3.5 rounded-xl shadow-lg shadow-emerald-900/30 flex items-center justify-center space-x-2">
-                        <span>Confirmar Pix via BaaS</span>
+                    <button type="submit" class="w-full mt-4 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] transition font-semibold text-white py-3.5 rounded-xl shadow-lg shadow-emerald-900/30 flex items-center justify-center space-x-2">
+                        <span>Confirmar Pix</span>
                         <i class="fa-solid fa-arrow-right text-xs"></i>
                     </button>
                 </form>
             </div>
 
-            <!-- Tela de Carregamento (Comunicação com o Backend) -->
+            <!-- Tela de Carregamento -->
             <div id="loading-view" class="hidden flex-col items-center justify-center py-12 space-y-6">
                 <div class="relative">
                     <div class="w-20 h-20 border-4 border-slate-700 border-t-emerald-500 rounded-full animate-spin"></div>
@@ -106,8 +177,8 @@
                     </div>
                 </div>
                 <div class="text-center space-y-2">
-                    <h3 class="font-semibold text-lg text-white">Processando no BaaS...</h3>
-                    <p id="loading-status-text" class="text-xs text-slate-400">Enviando requisição segura ao servidor...</p>
+                    <h3 class="font-semibold text-lg text-white">Processando Pix...</h3>
+                    <p id="loading-status-text" class="text-xs text-slate-400">Comunicando com o Banco Central (SPI)...</p>
                 </div>
             </div>
 
@@ -117,8 +188,8 @@
                     <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30">
                         <i class="fa-solid fa-check text-2xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white">Pix Realizado com Sucesso!</h3>
-                    <p class="text-xs text-emerald-400">Liquidado via SPI / Banco Central</p>
+                    <h3 class="text-xl font-bold text-white">Pix Realizado!</h3>
+                    <p class="text-xs text-emerald-400">Liquidado em tempo real</p>
                 </div>
 
                 <div class="bg-slate-900/80 border border-slate-700/80 rounded-2xl p-4 space-y-3 text-xs">
@@ -155,7 +226,7 @@
 
             <!-- Rodapé -->
             <div class="mt-8 pt-4 border-t border-slate-700/50 text-center">
-                <p class="text-[10px] text-slate-500">Arquitetura Segura: HTML Frontend + Node.js Backend API</p>
+                <p class="text-[10px] text-slate-500">Arquitetura Monolítica Segura (Node.js + Frontend)</p>
             </div>
         </div>
     </div>
@@ -169,21 +240,15 @@
             const chave = document.getElementById('chave-pix').value;
             const valor = parseFloat(document.getElementById('valor-pix').value);
             const contaOrigem = document.getElementById('conta-origem').value;
-            const logBox = document.getElementById('log-box');
+            const errorBox = document.getElementById('error-box');
             
             errorBox.classList.add('hidden');
 
-            // Alternar para tela de carregamento
             document.getElementById('form-view').classList.add('hidden');
             document.getElementById('loading-view').classList.remove('hidden');
-            document.getElementById('loading-status-text').innerText = "Enviando dados para o seu servidor backend...";
 
             try {
-                // Simula pausas visuais de requisição ao Banco Central
-                await new Promise(r => setTimeout(r, 800));
-                document.getElementById('loading-status-text').innerText = "Validando chave e consultando DICT / SPI...";
-
-                // Chamada real HTTP POST para o seu servidor backend Node.js
+                // Requisição assíncrona para a API interna no mesmo servidor
                 const response = await fetch('/api/realizar-pix', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -193,15 +258,13 @@
                 const resultado = await response.json();
 
                 if (!response.ok || !resultado.sucesso) {
-                    throw new log(resultado.log || 'Falha ao processar a transação financeira.');
+                    throw new Error(resultado.erro || 'Falha ao processar a transação.');
                 }
 
-                await new Promise(r => setTimeout(r, 1000));
                 document.getElementById('loading-view').classList.add('hidden');
                 document.getElementById('success-view').classList.remove('hidden');
 
-                // Preencher comprovante dinâmico com o retorno real da API
-                document.getElementById('receipt-valor').innerText = `R$ ${valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                document.getElementById('receipt-valor').innerText = \`R$ \${valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}\`;
                 document.getElementById('receipt-chave').innerText = chave;
                 document.getElementById('receipt-conta').innerText = contaOrigem.split(' - ')[0];
                 document.getElementById('receipt-data').innerText = new Date().toLocaleString('pt-BR');
@@ -218,7 +281,7 @@
         function copiarId() {
             const textToCopy = document.getElementById('receipt-e2e').innerText;
             navigator.clipboard.writeText(textToCopy).then(() => {
-                alertPersonalizado("ID da transação copiado!");
+                alertPersonalizado("ID copiado com sucesso!");
             });
         }
 
@@ -242,3 +305,12 @@
     </script>
 </body>
 </html>
+    `);
+});
+
+// Inicialização do servidor na porta 3000
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(\`Servidor unificado rodando com sucesso!\`);
+    console.log(\`Abra no navegador: http://localhost:\${PORT}\`);
+});
