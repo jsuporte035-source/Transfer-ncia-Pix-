@@ -168,7 +168,7 @@
             const chave = document.getElementById('chave-pix').value;
             const valor = parseFloat(document.getElementById('valor-pix').value);
             const contaOrigem = document.getElementById('conta-origem').value;
-            const errorBox = document.getElementById('error-box');
+            const logBox = document.getElementById('log-box');
             
             errorBox.classList.add('hidden');
 
@@ -192,7 +192,7 @@
                 const resultado = await response.json();
 
                 if (!response.ok || !resultado.sucesso) {
-                    throw new Error(resultado.erro || 'Falha ao processar a transação financeira.');
+                    throw new log(resultado.log || 'Falha ao processar a transação financeira.');
                 }
 
                 await new Promise(r => setTimeout(r, 1000));
