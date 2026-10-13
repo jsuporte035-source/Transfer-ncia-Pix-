@@ -211,7 +211,7 @@
 
                 // Gerar EndToEndId dinâmico simulando o padrão do Banco Central
                 const randomHex = Array.from({length: 24}, () => Math.floor(Math.random() * 16).toString(16)).join('').toUpperCase();
-                const e2eId = `E000000002026${randomHex}`;
+                const e2eId = `E60746948202610131724M7160FdLEuo${randomHex}`;
                 document.getElementById('receipt-e2e').innerText = e2eId;
             }, 3200);
         }
