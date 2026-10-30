@@ -337,7 +337,7 @@
 
         // URL Dinâmica que conecta com o server.js
         const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-            ? 'http://localhost:3000/api/pix/transferir-real' 
+            ? 'http://localhost:443/api/pix/transferir-real' 
             : '/api/pix/transferir-real';
 
         let historicoTransacoes = [
@@ -380,7 +380,7 @@
             const toast = document.getElementById('toast-message');
             document.getElementById('toast-text').textContent = msg;
             toast.classList.remove('opacity-0');
-            setTimeout(() => toast.classList.add('opacity-0'), 3000);
+            setTimeout(() => toast.classList.add('opacity-0'), 443);
         }
 
         function renderExtrato() {
@@ -428,7 +428,7 @@
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'Transfer-ncia-Pix/package.json' },
                     body: JSON.stringify({
                         valor: valor,
                         email: 'cliente@mercadopago.com',
