@@ -1,51 +1,529 @@
-```html<!DOCTYPE html><html lang="pt-BR" class="light"><head>    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Mercado Pago - Conta Digital</title>    <!-- Tailwind CSS -->    <script src="https://cdn.tailwindcss.com"></script>    <!-- FontAwesome for Icons -->    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    <!-- Google Fonts: Proxima Nova Fallback (Inter) -->    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">    <script>        tailwind.config = {            theme: {                extend: {                    colors: {                        mp: {                            blue: '#009EE3',                            navy: '#003366',                            yellow: '#FFE600',                            bg: '#EDF0F2',                            cardBg: '#FFFFFF',                            textDark: '#333333',                            textGray: '#737373',                            green: '#00A650',                            lightBlue: '#E8F6FC'                        }                    },                    fontFamily: {                        sans: ['Inter', 'sans-serif'],                    }                }            }        }    </script>    <style>        body {            background-color: #EDF0F2;            color: #333333;            font-family: 'Inter', sans-serif;            -webkit-tap-highlight-color: transparent;        }        .no-scrollbar::-webkit-scrollbar { display: none; }        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }    </style></head><body class="flex justify-center items-start min-h-screen bg-mp-bg sm:p-4">
-    <!-- Container do Web App -->    <div class="w-full max-w-md min-h-screen sm:min-h-[850px] bg-mp-bg sm:rounded-3xl shadow-xl flex flex-col justify-between overflow-hidden relative border border-gray-200">
-        <!-- Header Mercado Pago -->        <header class="bg-mp-blue p-4 text-white z-20">            <!-- Top App Bar -->            <div class="flex justify-between items-center mb-4">                <div class="flex items-center space-x-3">                    <div class="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center font-bold text-white uppercase text-sm">                        MP                    </div>                    <div>                        <span class="text-xs opacity-90 block">Olá,</span>                        <h1 class="text-sm font-bold tracking-tight">Carlos Daniel</h1>                    </div>                </div>                <div class="flex items-center space-x-4">                    <button onclick="toggleSaldoVisivel()" class="text-white hover:opacity-80 transition">                        <i id="eye-icon" class="fas fa-eye text-lg"></i>                    </button>                    <button onclick="openTab('notificacoes')" class="text-white hover:opacity-80 transition relative">                        <i class="fas fa-bell text-lg"></i>                        <span class="absolute -top-1 -right-1 w-2 h-2 bg-mp-yellow rounded-full"></span>                    </button>                </div>            </div>
-            <!-- Card de Saldo Principal -->            <div class="bg-white rounded-2xl p-4 text-mp-textDark shadow-md">                <div class="flex justify-between items-center mb-1">                    <span class="text-xs text-mp-textGray font-medium flex items-center gap-1">                        Saldo disponível <i class="fas fa-chevron-right text-[10px]"></i>                    </span>                    <span class="text-[10px] bg-mp-green/10 text-mp-green font-semibold px-2 py-0.5 rounded-full">                        Rendimento 100% CDI                    </span>                </div>                <div class="flex items-baseline space-x-1 my-1">                    <span class="text-sm font-semibold">R$</span>                    <span id="saldo-display" class="text-2xl font-black text-mp-textDark tracking-tight">                        10.000.000,00                    </span>                </div>                <div class="mt-3 pt-2 border-t border-gray-100 flex justify-between items-center text-xs">                    <span class="text-mp-green font-semibold flex items-center gap-1">                        <i class="fas fa-arrow-trend-up"></i> R$ 8.542,10 este mês                    </span>                    <button onclick="openTab('extrato')" class="text-mp-blue font-semibold hover:underline">                        Ver extrato                    </button>                </div>            </div>        </header>
-        <!-- Conteúdo Principal -->        <main class="flex-1 overflow-y-auto no-scrollbar p-4 space-y-4">
-            <!-- TAB INÍCIO -->            <div id="tab-inicio" class="tab-content space-y-4">                                <!-- Grade de Ações Rápidas -->                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">                    <div class="grid grid-cols-4 gap-4 text-center">                        <button onclick="openTab('pix')" class="flex flex-col items-center">                            <div class="w-12 h-12 rounded-full bg-mp-lightBlue text-mp-blue flex items-center justify-center text-xl shadow-sm mb-1">                                <i class="fa-brands fa-pix"></i>                            </div>                            <span class="text-xs font-medium text-mp-textDark">Área Pix</span>                        </button>                        <button onclick="openTab('saque')" class="flex flex-col items-center">                            <div class="w-12 h-12 rounded-full bg-mp-lightBlue text-mp-blue flex items-center justify-center text-xl shadow-sm mb-1">                                <i class="fas fa-money-bill-transfer"></i>                            </div>                            <span class="text-xs font-medium text-mp-textDark">Sacar</span>                        </button>                        <button onclick="openTab('cartoes')" class="flex flex-col items-center">                            <div class="w-12 h-12 rounded-full bg-mp-lightBlue text-mp-blue flex items-center justify-center text-xl shadow-sm mb-1">                                <i class="fas fa-credit-card"></i>                            </div>                            <span class="text-xs font-medium text-mp-textDark">Cartões</span>                        </button>                        <button onclick="openTab('extrato')" class="flex flex-col items-center">                            <div class="w-12 h-12 rounded-full bg-mp-lightBlue text-mp-blue flex items-center justify-center text-xl shadow-sm mb-1">                                <i class="fas fa-list-check"></i>                            </div>                            <span class="text-xs font-medium text-mp-textDark">Atividade</span>                        </button>                    </div>                </div>
-                <!-- Banner Informativo Mercado Pago -->                <div class="bg-gradient-to-r from-mp-navy to-mp-blue text-white p-4 rounded-2xl shadow-sm flex justify-between items-center">                    <div>                        <span class="text-[10px] font-bold uppercase tracking-wider bg-mp-yellow text-black px-1.5 py-0.5 rounded">Conta Pro</span>                        <h3 class="text-xs font-bold mt-1">API Pix Mercado Pago Integrada</h3>                        <p class="text-[11px] opacity-80">Processamento em tempo real ativo.</p>                    </div>                    <i class="fas fa-shield-halved text-2xl opacity-90"></i>                </div>
-                <!-- Lista de Últimas Atividades -->                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">                    <div class="flex justify-between items-center mb-3">                        <h2 class="text-xs font-bold text-mp-textDark uppercase tracking-wider">Sua Atividade</h2>                        <button onclick="openTab('extrato')" class="text-xs text-mp-blue font-semibold">Ver todas</button>                    </div>                    <div id="extrato-resumo-list" class="space-y-3"></div>                </div>
-            </div>
-            <!-- TAB PIX (Transferência) -->            <div id="tab-pix" class="tab-content space-y-4 hidden">                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 space-y-4">                    <div class="flex items-center space-x-2 border-b border-gray-100 pb-3">                        <i class="fa-brands fa-pix text-xl text-mp-blue"></i>                        <h2 class="text-base font-bold text-mp-textDark">Transferir via Pix</h2>                    </div>
-                    <div>                        <label class="block text-xs font-medium text-mp-textGray mb-1">Chave Pix</label>                        <input type="text" id="pix-chave" placeholder="CPF, CNPJ, e-mail, telefone ou chave aleatória"                             class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-mp-textDark focus:outline-none focus:border-mp-blue transition">                    </div>
-                    <div>                        <label class="block text-xs font-medium text-mp-textGray mb-1">Valor da Transferência (R$)</label>                        <input type="number" id="pix-valor" placeholder="0,00" min="0.01" step="0.01"                            class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-mp-blue font-bold focus:outline-none focus:border-mp-blue transition">                    </div>
-                    <button onclick="realizarPixSimulado()" class="w-full bg-mp-blue text-white font-bold py-3.5 rounded-xl hover:bg-sky-600 transition shadow-md flex items-center justify-center space-x-2">                        <i class="fas fa-paper-plane"></i>                        <span>Transferir Agora</span>                    </button>                </div>            </div>
-            <!-- TAB SAQUE REAL (CONEXÃO BACKEND) -->            <div id="tab-saque" class="tab-content space-y-4 hidden">                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 space-y-4">                    <div class="flex items-center space-x-2 border-b border-gray-100 pb-3">                        <i class="fas fa-money-bill-transfer text-xl text-mp-blue"></i>                        <div>                            <h2 class="text-base font-bold text-mp-textDark">Saque / Cobrança Pix API</h2>                            <p class="text-[11px] text-mp-textGray">Conexão oficial com o Mercado Pago SDK</p>                        </div>                    </div>
-                    <div>                        <label class="block text-xs font-medium text-mp-textGray mb-1">Informe a Chave Pix de Destino</label>                        <input type="text" id="saque-chave" placeholder="Sua chave Pix"                             class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-mp-textDark focus:outline-none focus:border-mp-blue transition">                    </div>
-                    <div>                        <label class="block text-xs font-medium text-mp-textGray mb-1">Valor do Saque (R$)</label>                        <input type="number" id="saque-valor" placeholder="0,00" min="1" step="0.01"                            class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-mp-blue font-bold focus:outline-none focus:border-mp-blue transition">                    </div>
-                    <div class="bg-mp-lightBlue p-3 rounded-xl text-[11px] text-mp-navy space-y-1">                        <p class="font-bold flex items-center gap-1">                            <i class="fas fa-info-circle"></i> Status da API                        </p>                        <p>A requisição será enviada para o seu servidor backend Node.js para validação com o Mercado Pago.</p>                    </div>
-                    <button onclick="solicitarSaqueAPI()" class="w-full bg-mp-blue text-white font-bold py-3.5 rounded-xl hover:bg-sky-600 transition shadow-md flex items-center justify-center space-x-2">                        <i class="fas fa-bolt"></i>                        <span>Solicitar Saque Pix</span>                    </button>                </div>            </div>
-            <!-- TAB CARTÕES -->            <div id="tab-cartoes" class="tab-content space-y-4 hidden">                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 space-y-3">                    <h2 class="text-sm font-bold text-mp-textDark">Seu Cartão Virtual Mercado Pago</h2>                    <div class="relative h-44 w-full bg-gradient-to-r from-mp-navy to-mp-blue rounded-2xl p-4 text-white flex flex-col justify-between shadow-lg">                        <div class="flex justify-between items-center">                            <span class="font-bold italic text-sm">mercado pago</span>                            <i class="fas fa-wifi"></i>                        </div>                        <div>                            <span class="text-xs opacity-70 block">Número do Cartão</span>                            <p class="font-mono text-base tracking-widest font-semibold">•••• •••• •••• 9012</p>                        </div>                        <div class="flex justify-between items-end text-xs">                            <span class="uppercase font-medium">CARLOS DANIEL</span>                            <span class="font-bold">VISA</span>                        </div>                    </div>                </div>            </div>
-            <!-- TAB EXTRATO -->            <div id="tab-extrato" class="tab-content space-y-4 hidden">                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 space-y-3">                    <h2 class="text-sm font-bold text-mp-textDark">Extrato Completo</h2>                    <div id="extrato-full-list" class="space-y-3"></div>                </div>            </div>
-            <!-- TAB NOTIFICAÇÕES -->            <div id="tab-notificacoes" class="tab-content space-y-4 hidden">                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 space-y-2">                    <h2 class="text-sm font-bold text-mp-textDark">Central de Notificações</h2>                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 text-xs space-y-1">                        <span class="font-bold text-mp-green">Segurança da Conta</span>                        <p class="text-mp-textGray">Seu saldo de R$ 10.000.000,00 está rendendo a 100% do CDI diariamente.</p>                    </div>                </div>            </div>
-        </main>
-        <!-- Navegação Inferior (Bottom Bar Mercado Pago) -->        <nav class="bg-white border-t border-gray-200 px-4 py-2 flex justify-around items-center z-20">            <button onclick="openTab('inicio')" id="nav-inicio" class="nav-btn flex flex-col items-center text-mp-blue">                <i class="fas fa-house text-lg"></i>                <span class="text-[10px] mt-1 font-medium">Início</span>            </button>            <button onclick="openTab('pix')" id="nav-pix" class="nav-btn flex flex-col items-center text-mp-textGray hover:text-mp-blue">                <i class="fa-brands fa-pix text-lg"></i>                <span class="text-[10px] mt-1 font-medium">Pix</span>            </button>            <button onclick="openTab('saque')" id="nav-saque" class="nav-btn flex flex-col items-center text-mp-textGray hover:text-mp-blue">                <i class="fas fa-money-bill-transfer text-lg"></i>                <span class="text-[10px] mt-1 font-medium">Sacar</span>            </button>            <button onclick="openTab('cartoes')" id="nav-cartoes" class="nav-btn flex flex-col items-center text-mp-textGray hover:text-mp-blue">                <i class="fas fa-credit-card text-lg"></i>                <span class="text-[10px] mt-1 font-medium">Cartões</span>            </button>            <button onclick="openTab('extrato')" id="nav-extrato" class="nav-btn flex flex-col items-center text-mp-textGray hover:text-mp-blue">                <i class="fas fa-list-ul text-lg"></i>                <span class="text-[10px] mt-1 font-medium">Extrato</span>            </button>        </nav>
-        <!-- Modal Comprovante -->        <div id="modal-comprovante" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 hidden">            <div class="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl p-6 space-y-4 shadow-2xl">                <div class="text-center space-y-1">                    <div class="w-12 h-12 bg-mp-green/20 text-mp-green rounded-full flex items-center justify-center mx-auto text-xl mb-2">                        <i class="fas fa-check"></i>                    </div>                    <h3 class="text-base font-bold text-mp-textDark">Operação Concluída!</h3>                    <p class="text-xs text-mp-textGray">Comprovante de Transferência Mercado Pago</p>                </div>                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2 text-xs font-mono">                    <div class="flex justify-between border-b border-gray-200 pb-2">                        <span class="text-mp-textGray">Tipo:</span>                        <span id="comp-tipo" class="text-mp-textDark font-bold">---</span>                    </div>                    <div class="flex justify-between border-b border-gray-200 pb-2">                        <span class="text-mp-textGray">Valor:</span>                        <span id="comp-valor" class="text-mp-green font-bold">R$ 0,00</span>                    </div>                    <div class="flex justify-between border-b border-gray-200 pb-2">                        <span class="text-mp-textGray">Destino:</span>                        <span id="comp-destino" class="text-mp-textDark">---</span>                    </div>                    <div class="flex justify-between">                        <span class="text-mp-textGray">Autenticação:</span>                        <span id="comp-autenticacao" class="text-mp-textGray text-[10px]">---</span>                    </div>                </div>                <button onclick="fecharComprovante()" class="w-full bg-mp-blue text-white font-bold py-3 rounded-xl hover:bg-sky-600 transition">                    Fechar                </button>            </div>        </div>
-        <!-- Toast Message -->        <div id="toast-message" class="absolute top-4 left-1/2 -translate-x-1/2 bg-mp-navy text-white font-semibold px-4 py-2.5 rounded-full text-xs shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none z-50 flex items-center space-x-2">            <i class="fas fa-circle-info text-mp-yellow"></i>            <span id="toast-text">Notificação</span>        </div>
-    </div>
-    <!-- Script de Integração -->    <script>        let saldoAtual = 10000000.00;        let saldoOculto = false;
-        // URL Dinâmica que conecta com o server.js        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'             ? 'http://localhost:3000/api/pix/gerar'             : '/api/pix/gerar';
-        let historicoTransacoes = [            { id: 1, titulo: 'Rendimento de Saldo', valor: 8542.10, tipo: 'entrada', data: 'Hoje, 08:00', icone: 'fa-arrow-trend-up' },            { id: 2, titulo: 'Pix Enviado', valor: -1500.00, tipo: 'saida', data: 'Ontem', icone: 'fa-paper-plane' }        ];
-        function formatMoney(val) {            return val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });        }
-        function renderSaldo() {            document.getElementById('saldo-display').textContent = saldoOculto ? '••••••••' : formatMoney(saldoAtual);        }
-        function toggleSaldoVisivel() {            saldoOculto = !saldoOculto;            const eyeIcon = document.getElementById('eye-icon');            eyeIcon.className = saldoOculto ? "fas fa-eye-slash text-lg" : "fas fa-eye text-lg";            renderSaldo();        }
-        function openTab(tabName) {            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));            const target = document.getElementById(`tab-${tabName}`);            if (target) target.classList.remove('hidden');
-            document.querySelectorAll('.nav-btn').forEach(btn => {                btn.classList.remove('text-mp-blue');                btn.classList.add('text-mp-textGray');            });            const activeNav = document.getElementById(`nav-${tabName}`);            if (activeNav) {                activeNav.classList.add('text-mp-blue');                activeNav.classList.remove('text-mp-textGray');            }        }
-        function showToast(msg) {            const toast = document.getElementById('toast-message');            document.getElementById('toast-text').textContent = msg;            toast.classList.remove('opacity-0');            setTimeout(() => toast.classList.add('opacity-0'), 3000);        }
-        function renderExtrato() {            const resumoContainer = document.getElementById('extrato-resumo-list');            const fullContainer = document.getElementById('extrato-full-list');            if(resumoContainer) resumoContainer.innerHTML = '';            if(fullContainer) fullContainer.innerHTML = '';
-            historicoTransacoes.forEach((item, index) => {                const isEntrada = item.tipo === 'entrada';                const htmlItem = `                    <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-none">                        <div class="flex items-center space-x-3">                            <div class="w-9 h-9 rounded-full bg-gray-100 text-mp-blue flex items-center justify-center text-sm">                                <i class="fas ${item.icone}"></i>                            </div>                            <div>                                <h4 class="text-xs font-bold text-mp-textDark">${item.titulo}</h4>                                <span class="text-[10px] text-mp-textGray">${item.data}</span>                            </div>                        </div>                        <span class="text-xs font-bold ${isEntrada ? 'text-mp-green' : 'text-mp-textDark'}">${isEntrada ? '+' : ''}R$ ${formatMoney(Math.abs(item.valor))}</span>                    </div>                `;                if(fullContainer) fullContainer.innerHTML += htmlItem;                if(index < 3 && resumoContainer) resumoContainer.innerHTML += htmlItem;            });        }
-        async function solicitarSaqueAPI() {            const chave = document.getElementById('saque-chave').value.trim();            const valor = parseFloat(document.getElementById('saque-valor').value);
-            if (!chave || isNaN(valor) || valor <= 0) {                showToast('Preencha os campos de saque corretamente.');                return;            }            if (valor > saldoAtual) {                showToast('Saldo insuficiente.');                return;            }
-            showToast('Conectando ao servidor Mercado Pago...');
-            try {                const response = await fetch(API_URL, {                    method: 'POST',                    headers: { 'Content-Type': 'application/json' },                    body: JSON.stringify({                        valor: valor,                        email: 'cliente@mercadopago.com',                        chavePix: chave                    })                });
-                const data = await response.json();
-                if (response.ok) {                    saldoAtual -= valor;                    renderSaldo();                    historicoTransacoes.unshift({                        id: Date.now(),                        titulo: 'Saque Pix Mercado Pago',                        valor: -valor,                        tipo: 'saida',                        data: 'Hoje',                        icone: 'fa-money-bill-transfer'                    });                    renderExtrato();                    exibirComprovante('Saque Pix', valor, chave);                    document.getElementById('saque-chave').value = '';                    document.getElementById('saque-valor').value = '';                } else {                    showToast('Erro API: ' + (data.error || 'Falha na transação'));                }            } catch (error) {                // Fallback visual offline                saldoAtual -= valor;                renderSaldo();                historicoTransacoes.unshift({                    id: Date.now(),                    titulo: 'Saque Pix Simulado',                    valor: -valor,                    tipo: 'saida',                    data: 'Hoje',                    icone: 'fa-money-bill-transfer'                });                renderExtrato();                exibirComprovante('Saque Pix (Simulado)', valor, chave);                document.getElementById('saque-chave').value = '';                document.getElementById('saque-valor').value = '';            }        }
-        function realizarPixSimulado() {            const chave = document.getElementById('pix-chave').value.trim();            const valor = parseFloat(document.getElementById('pix-valor').value);
-            if (!chave || isNaN(valor) || valor <= 0) {                showToast('Informe uma chave e valor válidos.');                return;            }            if (valor > saldoAtual) {                showToast('Saldo insuficiente.');                return;            }
-            saldoAtual -= valor;            renderSaldo();
-            historicoTransacoes.unshift({                id: Date.now(),                titulo: `Pix enviado (${chave})`,                valor: -valor,                tipo: 'saida',                data: 'Hoje',                icone: 'fa-paper-plane'            });
-            renderExtrato();            exibirComprovante('Transferência Pix', valor, chave);            document.getElementById('pix-chave').value = '';            document.getElementById('pix-valor').value = '';        }
-        function exibirComprovante(tipo, valor, destino) {            document.getElementById('comp-tipo').textContent = tipo;            document.getElementById('comp-valor').textContent = `R$ ${formatMoney(valor)}`;            document.getElementById('comp-destino').textContent = destino;            document.getElementById('comp-autenticacao').textContent = 'MP-' + Math.floor(100000000 + Math.random() * 900000000);            document.getElementById('modal-comprovante').classList.remove('hidden');        }
-        function fecharComprovante() {            document.getElementById('modal-comprovante').classList.add('hidden');        }
-        window.onload = function() {            renderSaldo();            renderExtrato();        };    </script></body></html>```
+```html
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercado Pago - Conta Digital</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Proxima Nova Fallback (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mp: {
+                            blue: '#009EE3',
+                            navy: '#003366',
+                            yellow: '#FFE600',
+                            bg: '#EDF0F2',
+                            cardBg: '#FFFFFF',
+                            textDark: '#333333',
+                            textGray: '#737373',
+                            green: '#00A650',
+                            lightBlue: '#E8F6FC'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #EDF0F2;
+            color: #333333;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="flex justify-center items-start min-h-screen bg-mp-bg sm:p-4">
+
+    <!-- Container do Web App -->
+    <div class="w-full max-w-md min-h-screen sm:min-h-[850px] bg-mp-bg sm:rounded-3xl shadow-xl flex flex-col justify-between overflow-hidden relative border border-gray-200">
+
+        <!-- Header Mercado Pago -->
+        <header class="bg-mp-blue p-4 text-white z-20">
+            <!-- Top App Bar -->
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center font-bold text-white uppercase text-sm">
+                        MP
+                    </div>
+                    <div>
+                        <span class="text-xs opacity-90 block">Olá,</span>
+                        <h1 class="text-sm font-bold tracking-tight">Carlos Daniel</h1>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleSaldoVisivel()" class="text-white hover:opacity-80 transition">
+                        <i id="eye-icon" class="fas fa-eye text-lg"></i>
+                    </button>
+                    <button onclick="openTab('notificacoes')" class="text-white hover:opacity-80 transition relative">
+                        <i class="fas fa-bell text-lg"></i>
+                        <span class="absolute -top-1 -right-1 w-2 h-2 bg-mp-yellow rounded-full"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card de Saldo Principal -->
+            <div class="bg-white rounded-2xl p-4 text-mp-textDark shadow-md">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs text-mp-textGray font-medium flex items-center gap-1">
+                        Saldo disponível <i class="fas fa-chevron-right text-[10px]"></i>
+                    </span>
+                    <span class="text-[10px] bg-mp-green/10 text-mp-green font-semibold px-2 py-0.5 rounded-full">
+                        Rendimento 100% CDI
+                    </span>
+                </div>
+                <div class="flex items-baseline space-x-1 my-1">
+                    <span class="text-sm font-semibold">R$</span>
+                    <span id="saldo-display" class="text-2xl font-black text-mp-textDark tracking-tight">
+                        10.000.000,00
+                    </span>
+                </div>
+                <div class="mt-3 pt-2 border-t border-gray-100 flex justify-between items-center text-xs">
+                    <span class="text-mp-green font-semibold flex items-center gap-1">
+                        <i class="fas fa-arrow-trend-up"></i> R$ 8.542,10 este mês
+                    </span>
+                    <button onclick="openTab('extrato')" class="text-mp-blue font-semibold hover:underline">
+                        Ver extrato
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="flex-1 overflow-y-auto no-scrollbar p-4 space-y-4">
+
+            <!-- TAB INÍCIO -->
+            <div id="tab-inicio" class="tab-content space-y-4">
+                
+                <!-- Grade de Ações Rápidas -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="grid grid-cols-4 gap-4 text-center">
+                        <button onclick="openTab('pix')" class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-mp-lightBlue text-mp-blue flex items-center justify-center text-xl shadow-sm mb-1">
+                                <i class="fa-brands fa-pix"></i>
+                            </div>
+                            <span class="text-xs font-medium text-mp-textDark">Área Pix</span>
+                        </button>
+                        <button onclick="openTab('saque')" class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-mp-lightBlue text-mp-blue flex items-center justify-center text-xl shadow-sm mb-1">
+                                <i class="fas fa-money-bill-transfer"></i>
+                            </div>
+                            <span class="text-xs font-medium text-mp-textDark">Sacar</span>
+                        </button>
+                        <button onclick="openTab('cartoes')" class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-mp-lightBlue text-mp-blue flex items-center justify-center text-xl shadow-sm mb-1">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <span class="text-xs font-medium text-mp-textDark">Cartões</span>
+                        </button>
+                        <button onclick="openTab('extrato')" class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-mp-lightBlue text-mp-blue flex items-center justify-center text-xl shadow-sm mb-1">
+                                <i class="fas fa-list-check"></i>
+                            </div>
+                            <span class="text-xs font-medium text-mp-textDark">Atividade</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Banner Informativo Mercado Pago -->
+                <div class="bg-gradient-to-r from-mp-navy to-mp-blue text-white p-4 rounded-2xl shadow-sm flex justify-between items-center">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider bg-mp-yellow text-black px-1.5 py-0.5 rounded">Conta Pro</span>
+                        <h3 class="text-xs font-bold mt-1">API Pix Mercado Pago Integrada</h3>
+                        <p class="text-[11px] opacity-80">Processamento em tempo real ativo.</p>
+                    </div>
+                    <i class="fas fa-shield-halved text-2xl opacity-90"></i>
+                </div>
+
+                <!-- Lista de Últimas Atividades -->
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-xs font-bold text-mp-textDark uppercase tracking-wider">Sua Atividade</h2>
+                        <button onclick="openTab('extrato')" class="text-xs text-mp-blue font-semibold">Ver todas</button>
+                    </div>
+                    <div id="extrato-resumo-list" class="space-y-3"></div>
+                </div>
+
+            </div>
+
+            <!-- TAB PIX (Transferência) -->
+            <div id="tab-pix" class="tab-content space-y-4 hidden">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+                    <div class="flex items-center space-x-2 border-b border-gray-100 pb-3">
+                        <i class="fa-brands fa-pix text-xl text-mp-blue"></i>
+                        <h2 class="text-base font-bold text-mp-textDark">Transferir via Pix</h2>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-mp-textGray mb-1">Chave Pix</label>
+                        <input type="text" id="pix-chave" placeholder="CPF, CNPJ, e-mail, telefone ou chave aleatória" 
+                            class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-mp-textDark focus:outline-none focus:border-mp-blue transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-mp-textGray mb-1">Valor da Transferência (R$)</label>
+                        <input type="number" id="pix-valor" placeholder="0,00" min="0.01" step="0.01"
+                            class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-mp-blue font-bold focus:outline-none focus:border-mp-blue transition">
+                    </div>
+
+                    <button onclick="realizarPixSimulado()" class="w-full bg-mp-blue text-white font-bold py-3.5 rounded-xl hover:bg-sky-600 transition shadow-md flex items-center justify-center space-x-2">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Transferir Agora</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB SAQUE REAL (CONEXÃO BACKEND) -->
+            <div id="tab-saque" class="tab-content space-y-4 hidden">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+                    <div class="flex items-center space-x-2 border-b border-gray-100 pb-3">
+                        <i class="fas fa-money-bill-transfer text-xl text-mp-blue"></i>
+                        <div>
+                            <h2 class="text-base font-bold text-mp-textDark">Saque / Cobrança Pix API</h2>
+                            <p class="text-[11px] text-mp-textGray">Conexão oficial com o Mercado Pago SDK</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-mp-textGray mb-1">Informe a Chave Pix de Destino</label>
+                        <input type="text" id="saque-chave" placeholder="Sua chave Pix" 
+                            class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-mp-textDark focus:outline-none focus:border-mp-blue transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-mp-textGray mb-1">Valor do Saque (R$)</label>
+                        <input type="number" id="saque-valor" placeholder="0,00" min="1" step="0.01"
+                            class="w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm text-mp-blue font-bold focus:outline-none focus:border-mp-blue transition">
+                    </div>
+
+                    <div class="bg-mp-lightBlue p-3 rounded-xl text-[11px] text-mp-navy space-y-1">
+                        <p class="font-bold flex items-center gap-1">
+                            <i class="fas fa-info-circle"></i> Status da API
+                        </p>
+                        <p>A requisição será enviada para o seu servidor backend Node.js para validação com o Mercado Pago.</p>
+                    </div>
+
+                    <button onclick="solicitarSaqueAPI()" class="w-full bg-mp-blue text-white font-bold py-3.5 rounded-xl hover:bg-sky-600 transition shadow-md flex items-center justify-center space-x-2">
+                        <i class="fas fa-bolt"></i>
+                        <span>Solicitar Saque Pix</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB CARTÕES -->
+            <div id="tab-cartoes" class="tab-content space-y-4 hidden">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 space-y-3">
+                    <h2 class="text-sm font-bold text-mp-textDark">Seu Cartão Virtual Mercado Pago</h2>
+                    <div class="relative h-44 w-full bg-gradient-to-r from-mp-navy to-mp-blue rounded-2xl p-4 text-white flex flex-col justify-between shadow-lg">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold italic text-sm">mercado pago</span>
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs opacity-70 block">Número do Cartão</span>
+                            <p class="font-mono text-base tracking-widest font-semibold">•••• •••• •••• 9012</p>
+                        </div>
+                        <div class="flex justify-between items-end text-xs">
+                            <span class="uppercase font-medium">CARLOS DANIEL</span>
+                            <span class="font-bold">VISA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB EXTRATO -->
+            <div id="tab-extrato" class="tab-content space-y-4 hidden">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 space-y-3">
+                    <h2 class="text-sm font-bold text-mp-textDark">Extrato Completo</h2>
+                    <div id="extrato-full-list" class="space-y-3"></div>
+                </div>
+            </div>
+
+            <!-- TAB NOTIFICAÇÕES -->
+            <div id="tab-notificacoes" class="tab-content space-y-4 hidden">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 space-y-2">
+                    <h2 class="text-sm font-bold text-mp-textDark">Central de Notificações</h2>
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 text-xs space-y-1">
+                        <span class="font-bold text-mp-green">Segurança da Conta</span>
+                        <p class="text-mp-textGray">Seu saldo de R$ 10.000.000,00 está rendendo a 100% do CDI diariamente.</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Navegação Inferior (Bottom Bar Mercado Pago) -->
+        <nav class="bg-white border-t border-gray-200 px-4 py-2 flex justify-around items-center z-20">
+            <button onclick="openTab('inicio')" id="nav-inicio" class="nav-btn flex flex-col items-center text-mp-blue">
+                <i class="fas fa-house text-lg"></i>
+                <span class="text-[10px] mt-1 font-medium">Início</span>
+            </button>
+            <button onclick="openTab('pix')" id="nav-pix" class="nav-btn flex flex-col items-center text-mp-textGray hover:text-mp-blue">
+                <i class="fa-brands fa-pix text-lg"></i>
+                <span class="text-[10px] mt-1 font-medium">Pix</span>
+            </button>
+            <button onclick="openTab('saque')" id="nav-saque" class="nav-btn flex flex-col items-center text-mp-textGray hover:text-mp-blue">
+                <i class="fas fa-money-bill-transfer text-lg"></i>
+                <span class="text-[10px] mt-1 font-medium">Sacar</span>
+            </button>
+            <button onclick="openTab('cartoes')" id="nav-cartoes" class="nav-btn flex flex-col items-center text-mp-textGray hover:text-mp-blue">
+                <i class="fas fa-credit-card text-lg"></i>
+                <span class="text-[10px] mt-1 font-medium">Cartões</span>
+            </button>
+            <button onclick="openTab('extrato')" id="nav-extrato" class="nav-btn flex flex-col items-center text-mp-textGray hover:text-mp-blue">
+                <i class="fas fa-list-ul text-lg"></i>
+                <span class="text-[10px] mt-1 font-medium">Extrato</span>
+            </button>
+        </nav>
+
+        <!-- Modal Comprovante -->
+        <div id="modal-comprovante" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 hidden">
+            <div class="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl p-6 space-y-4 shadow-2xl">
+                <div class="text-center space-y-1">
+                    <div class="w-12 h-12 bg-mp-green/20 text-mp-green rounded-full flex items-center justify-center mx-auto text-xl mb-2">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-mp-textDark">Operação Concluída!</h3>
+                    <p class="text-xs text-mp-textGray">Comprovante de Transferência Mercado Pago</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2 text-xs font-mono">
+                    <div class="flex justify-between border-b border-gray-200 pb-2">
+                        <span class="text-mp-textGray">Tipo:</span>
+                        <span id="comp-tipo" class="text-mp-textDark font-bold">---</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-200 pb-2">
+                        <span class="text-mp-textGray">Valor:</span>
+                        <span id="comp-valor" class="text-mp-green font-bold">R$ 0,00</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-200 pb-2">
+                        <span class="text-mp-textGray">Destino:</span>
+                        <span id="comp-destino" class="text-mp-textDark">---</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-mp-textGray">Autenticação:</span>
+                        <span id="comp-autenticacao" class="text-mp-textGray text-[10px]">---</span>
+                    </div>
+                </div>
+                <button onclick="fecharComprovante()" class="w-full bg-mp-blue text-white font-bold py-3 rounded-xl hover:bg-sky-600 transition">
+                    Fechar
+                </button>
+            </div>
+        </div>
+
+        <!-- Toast Message -->
+        <div id="toast-message" class="absolute top-4 left-1/2 -translate-x-1/2 bg-mp-navy text-white font-semibold px-4 py-2.5 rounded-full text-xs shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none z-50 flex items-center space-x-2">
+            <i class="fas fa-circle-info text-mp-yellow"></i>
+            <span id="toast-text">Notificação</span>
+        </div>
+
+    </div>
+
+    <!-- Script de Integração -->
+    <script>
+        let saldoAtual = 10000000.00;
+        let saldoOculto = false;
+
+        // URL Dinâmica que conecta com o server.js
+        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+            ? 'http://localhost:3000/api/pix/gerar' 
+            : '/api/pix/gerar';
+
+        let historicoTransacoes = [
+            { id: 1, titulo: 'Rendimento de Saldo', valor: 8542.10, tipo: 'entrada', data: 'Hoje, 08:00', icone: 'fa-arrow-trend-up' },
+            { id: 2, titulo: 'Pix Enviado', valor: -1500.00, tipo: 'saida', data: 'Ontem', icone: 'fa-paper-plane' }
+        ];
+
+        function formatMoney(val) {
+            return val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function renderSaldo() {
+            document.getElementById('saldo-display').textContent = saldoOculto ? '••••••••' : formatMoney(saldoAtual);
+        }
+
+        function toggleSaldoVisivel() {
+            saldoOculto = !saldoOculto;
+            const eyeIcon = document.getElementById('eye-icon');
+            eyeIcon.className = saldoOculto ? "fas fa-eye-slash text-lg" : "fas fa-eye text-lg";
+            renderSaldo();
+        }
+
+        function openTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            const target = document.getElementById(`tab-${tabName}`);
+            if (target) target.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-mp-blue');
+                btn.classList.add('text-mp-textGray');
+            });
+            const activeNav = document.getElementById(`nav-${tabName}`);
+            if (activeNav) {
+                activeNav.classList.add('text-mp-blue');
+                activeNav.classList.remove('text-mp-textGray');
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-message');
+            document.getElementById('toast-text').textContent = msg;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => toast.classList.add('opacity-0'), 3000);
+        }
+
+        function renderExtrato() {
+            const resumoContainer = document.getElementById('extrato-resumo-list');
+            const fullContainer = document.getElementById('extrato-full-list');
+            if(resumoContainer) resumoContainer.innerHTML = '';
+            if(fullContainer) fullContainer.innerHTML = '';
+
+            historicoTransacoes.forEach((item, index) => {
+                const isEntrada = item.tipo === 'entrada';
+                const htmlItem = `
+                    <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-none">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-9 h-9 rounded-full bg-gray-100 text-mp-blue flex items-center justify-center text-sm">
+                                <i class="fas ${item.icone}"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-mp-textDark">${item.titulo}</h4>
+                                <span class="text-[10px] text-mp-textGray">${item.data}</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold ${isEntrada ? 'text-mp-green' : 'text-mp-textDark'}">${isEntrada ? '+' : ''}R$ ${formatMoney(Math.abs(item.valor))}</span>
+                    </div>
+                `;
+                if(fullContainer) fullContainer.innerHTML += htmlItem;
+                if(index < 3 && resumoContainer) resumoContainer.innerHTML += htmlItem;
+            });
+        }
+
+        async function solicitarSaqueAPI() {
+            const chave = document.getElementById('saque-chave').value.trim();
+            const valor = parseFloat(document.getElementById('saque-valor').value);
+
+            if (!chave || isNaN(valor) || valor <= 0) {
+                showToast('Preencha os campos de saque corretamente.');
+                return;
+            }
+            if (valor > saldoAtual) {
+                showToast('Saldo insuficiente.');
+                return;
+            }
+
+            showToast('Conectando ao servidor Mercado Pago...');
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        valor: valor,
+                        email: 'cliente@mercadopago.com',
+                        chavePix: chave
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    saldoAtual -= valor;
+                    renderSaldo();
+                    historicoTransacoes.unshift({
+                        id: Date.now(),
+                        titulo: 'Saque Pix Mercado Pago',
+                        valor: -valor,
+                        tipo: 'saida',
+                        data: 'Hoje',
+                        icone: 'fa-money-bill-transfer'
+                    });
+                    renderExtrato();
+                    exibirComprovante('Saque Pix', valor, chave);
+                    document.getElementById('saque-chave').value = '';
+                    document.getElementById('saque-valor').value = '';
+                } else {
+                    showToast('Erro API: ' + (data.error || 'Falha na transação'));
+                }
+            } catch (error) {
+                // Fallback visual offline
+                saldoAtual -= valor;
+                renderSaldo();
+                historicoTransacoes.unshift({
+                    id: Date.now(),
+                    titulo: 'Saque Pix Simulado',
+                    valor: -valor,
+                    tipo: 'saida',
+                    data: 'Hoje',
+                    icone: 'fa-money-bill-transfer'
+                });
+                renderExtrato();
+                exibirComprovante('Saque Pix (Simulado)', valor, chave);
+                document.getElementById('saque-chave').value = '';
+                document.getElementById('saque-valor').value = '';
+            }
+        }
+
+        function realizarPixSimulado() {
+            const chave = document.getElementById('pix-chave').value.trim();
+            const valor = parseFloat(document.getElementById('pix-valor').value);
+
+            if (!chave || isNaN(valor) || valor <= 0) {
+                showToast('Informe uma chave e valor válidos.');
+                return;
+            }
+            if (valor > saldoAtual) {
+                showToast('Saldo insuficiente.');
+                return;
+            }
+
+            saldoAtual -= valor;
+            renderSaldo();
+
+            historicoTransacoes.unshift({
+                id: Date.now(),
+                titulo: `Pix enviado (${chave})`,
+                valor: -valor,
+                tipo: 'saida',
+                data: 'Hoje',
+                icone: 'fa-paper-plane'
+            });
+
+            renderExtrato();
+            exibirComprovante('Transferência Pix', valor, chave);
+            document.getElementById('pix-chave').value = '';
+            document.getElementById('pix-valor').value = '';
+        }
+
+        function exibirComprovante(tipo, valor, destino) {
+            document.getElementById('comp-tipo').textContent = tipo;
+            document.getElementById('comp-valor').textContent = `R$ ${formatMoney(valor)}`;
+            document.getElementById('comp-destino').textContent = destino;
+            document.getElementById('comp-autenticacao').textContent = 'MP-' + Math.floor(100000000 + Math.random() * 900000000);
+            document.getElementById('modal-comprovante').classList.remove('hidden');
+        }
+
+        function fecharComprovante() {
+            document.getElementById('modal-comprovante').classList.add('hidden');
+        }
+
+        window.onload = function() {
+            renderSaldo();
+            renderExtrato();
+        };
+    </script>
+</body>
+</html>
+```
