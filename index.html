@@ -337,8 +337,8 @@
 
         // URL Dinâmica que conecta com o server.js
         const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-            ? 'http://localhost:3000/api/pix/gerar' 
-            : '/api/pix/gerar';
+            ? 'http://localhost:3000/api/pix/transferir-real' 
+            : '/api/pix/transferir-real';
 
         let historicoTransacoes = [
             { id: 1, titulo: 'Rendimento de Saldo', valor: 8542.10, tipo: 'entrada', data: 'Hoje, 08:00', icone: 'fa-arrow-trend-up' },
