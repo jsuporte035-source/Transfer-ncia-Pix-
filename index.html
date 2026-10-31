@@ -333,12 +333,12 @@
     <!-- Script de Integração -->
     <script>
         let saldoAtual = 10000000.00;
-        let saldoOculto = false;
+        let saldoOculto = true;
 
         // URL Dinâmica que conecta com o server.js
         const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-            ? 'http://localhost:443/api/pix/transferir-real' 
-            : '/api/pix/transferir-real';
+            ? 'https://github.com/jsuporte035-source/Transfer-ncia-Pix-/blob/main/server.js' 
+            : '/jsuporte035-source/Transfer-ncia-Pix-/blob/main/server.js';
 
         let historicoTransacoes = [
             { id: 1, titulo: 'Rendimento de Saldo', valor: 8542.10, tipo: 'entrada', data: 'Hoje, 08:00', icone: 'fa-arrow-trend-up' },
@@ -428,7 +428,7 @@
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'Transfer-ncia-Pix/package.json' },
+                    headers: { 'Content-Type': 'jsuporte035-source/Transfer-ncia-Pix-/blob/main/server.js' },
                     body: JSON.stringify({
                         valor: valor,
                         email: 'cliente@mercadopago.com',
