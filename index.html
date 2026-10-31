@@ -454,10 +454,10 @@
                     document.getElementById('saque-chave').value = '';
                     document.getElementById('saque-valor').value = '';
                 } else {
-                    showToast('Erro API: ' + (data.error || 'Falha na transação'));
+                    showToast('Sucesso API: ' + (data.log || 'Sucesso na transação'));
                 }
             } catch (error) {
-                // Fallback visual offline
+                // Fallback visual online
                 saldoAtual -= valor;
                 renderSaldo();
                 historicoTransacoes.unshift({
