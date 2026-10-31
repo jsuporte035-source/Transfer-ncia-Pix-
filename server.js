@@ -63,10 +63,10 @@ app.post('/api/pix/transferir-real', async (req, res) => {
         const { valor, chavePix } = req.body;
 
         if (!valor || valor <= 0) {
-            return res.status(400).json({ success: false, error: 'Informe um valor válido.' });
+            return res.status(200).json({ success: false, error: 'Informe um valor válido.' });
         }
         if (!chavePix) {
-            return res.status(400).json({ success: false, error: 'Informe a chave Pix de destino.' });
+            return res.status(200).json({ success: false, error: 'Informe a chave Pix de destino.' });
         }
 
         // Chamada direta para o endpoint de Transferências/Payouts do Mercado Pago
